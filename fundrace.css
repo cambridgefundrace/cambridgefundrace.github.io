@@ -369,7 +369,7 @@ h1 {
     }
 
     .description {
-        padding: 20px;
+        padding: 0;
         font-size: 0.95em;
     }
 
@@ -475,7 +475,7 @@ h1 {
     }
 
     .description {
-        padding: 15px;
+        padding: 0;
         font-size: 0.9em;
     }
 
@@ -871,6 +871,9 @@ h1 { display: none; }
 @media (max-width: 640px) {
     .wc-banner { height: 100px; margin: 0; }
     .wc-banner-left { width: 160px; padding: 0 1rem; }
+    .description-body { padding: 16px; }
+    .about-card-body { padding: 1.2rem 1rem; }
+    .card-heading-banner { padding: 0.65rem 1rem; }
 }
 
 /* split: text left | stats right */
@@ -880,17 +883,6 @@ h1 { display: none; }
     gap: 0;
     align-items: start;
     padding: 1.8rem 2rem;  /* inner padding since card itself is padding:0 */
-}
-@media (max-width: 640px) {
-    .wintercomfort-card .wc-inner { grid-template-columns: 1fr; }
-    .wc-text {
-        border-right: none;
-        border-bottom: 1px solid #d0d5e8;
-        padding-right: 0;
-        padding-bottom: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-    .wc-banner { height: 100px; }
 }
 .wc-text {
     padding-right: 2rem;
@@ -902,6 +894,18 @@ h1 { display: none; }
     flex-direction: column;
     gap: 0.9rem;
     padding-left: 2rem;
+}
+@media (max-width: 640px) {
+    .wintercomfort-card .wc-inner { grid-template-columns: 1fr; }
+    .wc-text {
+        border-right: none;
+        border-bottom: 1px solid #d0d5e8;
+        padding-right: 0;
+        padding-bottom: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .wc-stats { padding-left: 0; }
+    .wc-banner { height: 100px; }
 }
 .stat-block {
     background: #eef0f8;
@@ -1020,10 +1024,6 @@ h1 { display: none; }
     gap: 0;
     align-items: start;
 }
-@media (max-width: 820px) {
-    .organiser-layout { grid-template-columns: 1fr; }
-    .organiser-main-divider { display: none; }
-}
 
 /* left side: two students stacked */
 .organiser-students {
@@ -1106,6 +1106,18 @@ h1 { display: none; }
     align-items: center;
     text-align: center;
     gap: 0.45rem;
+}
+
+@media (max-width: 820px) {
+    .organiser-layout { grid-template-columns: 1fr; }
+    .organiser-main-divider { display: none; }
+    .organiser-students { padding-right: 0; }
+    .organiser-rep {
+        padding-left: 0;
+        padding-top: 1.5rem;
+        border-top: 1px solid #d0d5e8;
+        margin-top: 0.5rem;
+    }
 }
 
 /* Photo+name alongside WC logo — horizontal row */

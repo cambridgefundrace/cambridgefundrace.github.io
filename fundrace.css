@@ -984,7 +984,7 @@ h1 { display: none; }
     flex-shrink: 0;
     margin-top: 0.05rem;
 }
-.signup-btn-placeholder {
+.signup-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -996,15 +996,20 @@ h1 { display: none; }
     border-radius: 6px;
     border: none;
     cursor: pointer;
-    opacity: 0.5;
-    pointer-events: none;
+    /* opacity: 0.5; */
+    /* pointer-events: none; */
 }
-.signup-btn-placeholder::after {
+/* .signup-btn-placeholder::after {
     content: '(link coming soon)';
     font-size: 0.7rem;
     font-weight: 500;
     text-transform: none;
     opacity: 0.85;
+} */
+
+.signup-btn:hover {
+    background: #4aa52f;
+    transform: translateY(-1px);
 }
 .signup-spots {
     margin-top: 0.9rem;

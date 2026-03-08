@@ -54,44 +54,44 @@ function getCollegeAbbrev(collegeName) {
     return abbrevMap[collegeName] || collegeName.substring(0, 3).toUpperCase();
 }
 
-const OVERALL_GOAL = 15000;      // £ target shown in the goal banner
-const COLLEGE_GOAL = 500;        // £ target for each college's progress bar
+const OVERALL_GOAL = 10000;      // £ target shown in the goal banner
+const COLLEGE_GOAL = 300;        // £ target for each college's progress bar
 
 // ── INLINE FUND DATA ─────────────────────────────────────────────────────────
 // Update the amounts here directly instead of editing funds.csv.
 // Format: { college: "College Name", raised_funds: NUMBER }
 const FUNDS_DATA = [
-    { college: "Christ's College",        raised_funds: 655 },
-    { college: "Churchill College",        raised_funds: 115 },
-    { college: "Clare College",            raised_funds: 26  },
-    { college: "Clare Hall",               raised_funds: 760 },
-    { college: "Corpus Christi College",   raised_funds: 282 },
-    { college: "Darwin College",           raised_funds: 251 },
-    { college: "Downing College",          raised_funds: 229 },
-    { college: "Emmanuel College",         raised_funds: 143 },
-    { college: "Fitzwilliam College",      raised_funds: 755 },
-    { college: "Girton College",           raised_funds: 105 },
-    { college: "Gonville & Caius College", raised_funds: 693 },
-    { college: "Homerton College",         raised_funds: 759 },
-    { college: "Hughes Hall",              raised_funds: 914 },
-    { college: "Jesus College",            raised_funds: 559 },
-    { college: "King's College",           raised_funds: 90  },
-    { college: "Lucy Cavendish College",   raised_funds: 605 },
-    { college: "Magdalene College",        raised_funds: 433 },
-    { college: "Murray Edwards College",   raised_funds: 33  },
-    { college: "Newnham College",          raised_funds: 31  },
-    { college: "Pembroke College",         raised_funds: 96  },
-    { college: "Peterhouse",               raised_funds: 224 },
-    { college: "Queens' College",          raised_funds: 239 },
-    { college: "Robinson College",         raised_funds: 518 },
-    { college: "Selwyn College",           raised_funds: 617 },
-    { college: "Sidney Sussex College",    raised_funds: 28  },
-    { college: "St Catharine's College",   raised_funds: 575 },
-    { college: "St Edmund's College",      raised_funds: 204 },
-    { college: "St John's College",        raised_funds: 734 },
-    { college: "Trinity College",          raised_funds: 666 },
-    { college: "Trinity Hall",             raised_funds: 719 },
-    { college: "Wolfson College",          raised_funds: 559 },
+    { college: "Christ's College",        raised_funds: 0 },
+    { college: "Churchill College",        raised_funds: 0 },
+    { college: "Clare College",            raised_funds: 0  },
+    { college: "Clare Hall",               raised_funds: 0 },
+    { college: "Corpus Christi College",   raised_funds: 0 },
+    { college: "Darwin College",           raised_funds: 0 },
+    { college: "Downing College",          raised_funds: 0 },
+    { college: "Emmanuel College",         raised_funds: 0 },
+    { college: "Fitzwilliam College",      raised_funds: 0 },
+    { college: "Girton College",           raised_funds: 0 },
+    { college: "Gonville & Caius College", raised_funds: 0 },
+    { college: "Homerton College",         raised_funds: 0 },
+    { college: "Hughes Hall",              raised_funds: 0 },
+    { college: "Jesus College",            raised_funds: 0 },
+    { college: "King's College",           raised_funds: 0  },
+    { college: "Lucy Cavendish College",   raised_funds: 0 },
+    { college: "Magdalene College",        raised_funds: 0 },
+    { college: "Murray Edwards College",   raised_funds: 0  },
+    { college: "Newnham College",          raised_funds: 0  },
+    { college: "Pembroke College",         raised_funds: 0  },
+    { college: "Peterhouse",               raised_funds: 0},
+    { college: "Queens' College",          raised_funds: 0},
+    { college: "Robinson College",         raised_funds: 0},
+    { college: "Selwyn College",           raised_funds: 0},
+    { college: "Sidney Sussex College",    raised_funds: 0},
+    { college: "St Catharine's College",   raised_funds: 0},
+    { college: "St Edmund's College",      raised_funds: 0},
+    { college: "St John's College",        raised_funds: 0},
+    { college: "Trinity College",          raised_funds: 0},
+    { college: "Trinity Hall",             raised_funds: 0},
+    { college: "Wolfson College",          raised_funds: 0},
 ];
 
 // Function to load and display leaderboard
@@ -152,7 +152,7 @@ function loadLeaderboard() {
         logoDiv.className = 'logo';
 
         const logoImg = document.createElement('img');
-        logoImg.src = `logos/${abbrev}.png`;
+        logoImg.src = `Images/logos/${abbrev}.png`;
         logoImg.alt = college.college;
         logoImg.style.width = '100%';
         logoImg.style.height = '100%';

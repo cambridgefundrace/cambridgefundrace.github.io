@@ -54,8 +54,8 @@ function getCollegeAbbrev(collegeName) {
     return abbrevMap[collegeName] || collegeName.substring(0, 3).toUpperCase();
 }
 
-const OVERALL_GOAL = 10000;      // £ target shown in the goal banner
-const COLLEGE_GOAL = 300;        // £ target for each college's progress bar
+const OVERALL_GOAL = 6000;      // £ target shown in the goal banner
+const COLLEGE_GOAL = 200;        // £ target for each college's progress bar
 
 // ── INLINE FUND DATA ─────────────────────────────────────────────────────────
 // Update the amounts here directly instead of editing funds.csv.

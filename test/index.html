@@ -261,33 +261,45 @@
             margin-bottom: 0.3rem;
         }
 
-        /* Hint banner at top of leaderboard */
-        .leaderboard-donate-hint {
-            padding: 11px 20px;
-            background: #fff8f8;
-            border-bottom: 2px solid rgba(200, 16, 46, 0.25);
-            font-size: 0.86rem;
-            font-weight: 600;
-            color: #CC2936;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-        }
+        /* Refresh button — lives inside the dark goal banner */
         .leaderboard-refresh-btn {
             background: none;
-            border: 1px solid rgba(200, 16, 46, 0.35);
+            border: 1px solid rgba(255,255,255,0.25);
             border-radius: 4px;
-            color: #CC2936;
-            font-size: 0.9rem;
-            padding: 2px 7px;
+            color: #ccc;
+            font-size: 1rem;
+            padding: 1px 7px;
             cursor: pointer;
             flex-shrink: 0;
-            line-height: 1.4;
+            line-height: 1.5;
             transition: background 0.15s;
+            margin-left: 8px;
         }
-        .leaderboard-refresh-btn:hover { background: rgba(200, 16, 46, 0.08); }
-        .leaderboard-refresh-btn:disabled { opacity: 0.4; cursor: default; }
+        .leaderboard-refresh-btn:hover { background: rgba(255,255,255,0.1); }
+        .leaderboard-refresh-btn:disabled { opacity: 0.35; cursor: default; }
+
+        /* Hero amount */
+        .goal-hero {
+            display: flex;
+            align-items: baseline;
+            gap: 0.4rem;
+        }
+        .goal-raised { font-size: 1.9rem !important; font-weight: 800; color: #fff !important; line-height: 1; }
+        .goal-raised-label { font-size: 0.95rem; color: rgba(255,255,255,0.55); font-weight: 500; }
+        .goal-subtitle {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 8px;
+            margin-top: 1px;
+        }
+        .goal-status {
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.4);
+            font-style: italic;
+        }
 
         /* Donate button: full-width on mobile, anchored above leaderboard */
         .donate-button + .description { margin-top: 1.5rem; }
@@ -448,7 +460,7 @@
         </div><!-- /.site-header -->
 
         <!-- DONATE BUTTON — top of page -->
-        <button class="donate-button" onclick="document.getElementById('leaderboard-section').scrollIntoView({behavior:'smooth'})">
+        <button class="donate-button" onclick="(function(){ const el = document.getElementById('donate-btn-2'); const top = window.scrollY + el.getBoundingClientRect().top - window.innerHeight * 0.1; window.scrollTo({top, behavior:'smooth'}); })()">
             ► Donate for your college ◄
         </button>
 
@@ -462,13 +474,13 @@
             <div class="fe-grid">
                 <div class="fe-card fe-card--light">
                     <div class="fe-card-heading">🤝 Mission</div>
-                    <p>This is a <strong>good-faith</strong> fundraising competition between the 31 colleges of the University of Cambridge to help the local community. The winner is the college that raises the most funds, with secret prizes for secondary goals too.</p>
+                    <p>This is a <strong>good-faith</strong> fundraising competition between the 31 colleges of the University of Cambridge to show that students are engaged in giving back to the local community. The competition is decided by which college raises the most funds, with secret prizes for secondary goals too.</p>
                     <a class="fe-insta-badge" href="https://www.instagram.com/cambridgefundrace" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="flex-shrink:0;display:block"><defs><linearGradient id="ig-g" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f09433"/><stop offset="25%" stop-color="#e6683c"/><stop offset="50%" stop-color="#dc2743"/><stop offset="75%" stop-color="#cc2366"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs><path fill="url(#ig-g)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg> @cambridgefundrace</a>
                 </div>
                 <div class="fe-card fe-card--light">
                     <div class="fe-card-heading">🏠 Cause</div>
                     <p>All funds go directly to <strong><a class="wc-link" href="https://wintercomfort.org.uk/about-us/" target="_blank" rel="noopener">Wintercomfort</a></strong>, who have helped those in need of shelter, food and clothes in Cambridge for 30+ years.
-                    Last year Wintercomfort supported 800 people, including 100+ women.</p>
+                    Last year, Wintercomfort supported 800 people, including 100+ women through their day centre which provides essential welfare year-round.</p>
                     <a class="fe-insta-badge" href="https://www.instagram.com/wintercomfortforthehomeless" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="flex-shrink:0;display:block"><defs><linearGradient id="ig-g2" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f09433"/><stop offset="25%" stop-color="#e6683c"/><stop offset="50%" stop-color="#dc2743"/><stop offset="75%" stop-color="#cc2366"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs><path fill="url(#ig-g2)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg> @wintercomfortforthehomeless</a>
                 </div>
             </div>
@@ -504,7 +516,6 @@
                     <div class="fe-stats">
                         <div class="fe-stat">
                             <div class="fe-stat-value" id="fe-day-counter">—</div>
-                            <div class="fe-stat-label">competition status</div>
                         </div>
                         <div class="fe-stat-divider"></div>
                         <div class="fe-stat">
@@ -575,8 +586,8 @@
         </div>
 
         <!-- DONATE BUTTON — scrolls to leaderboard -->
-        <button class="donate-button" onclick="document.getElementById('leaderboard-section').scrollIntoView({behavior:'smooth'})">
-            Donate for your college ↓
+        <button id="donate-btn-2" class="donate-button" onclick="document.getElementById('leaderboard-section').scrollIntoView({behavior:'smooth'})">
+            Tap/click your college ↓
         </button>
 
         <!-- COMING SOON (hidden in this test file) -->
@@ -761,68 +772,27 @@ Working within our community is a huge aspect of what Wintercomfort does, gainin
         "Wolfson College":         "w"
     };
 
-    // ── LIVE FETCH ────────────────────────────────────────────────────────────
-    // Uses corsproxy.io to fetch each JustGiving page from the browser.
-    // Returns raw HTML directly (no JSON wrapper).
-    const JG_BASE = 'https://www.justgiving.com/page/fundrace-';
-
-    async function fetchCollegeAmount(collegeId) {
-        const targetUrl = JG_BASE + collegeId;
-        const proxyUrl  = 'https://corsproxy.io/?' + encodeURIComponent(targetUrl);
-
-        const res = await fetch(proxyUrl);
-        if (!res.ok) throw new Error(`Proxy HTTP ${res.status}`);
-
-        const html = await res.text();
-
-        // ── Strategy 1: RSC JSON payload — fundraiserRaisedAmount ──
-        // JustGiving embeds React Server Component data in inline <script> tags.
-        // The fundraiserRaisedAmount field is the total raised by this fundraiser page.
-        const rscPatterns = [
-            /"fundraiserRaisedAmount":\{"value":([\d.]+)/,
-            /"totalAmount":\{"value":([\d.]+)/,
-            /"onlineAmount":\{"value":([\d.]+)/,
-        ];
-        for (const pattern of rscPatterns) {
-            const match = html.match(pattern);
-            if (match) {
-                const val = parseFloat(match[1]);
-                if (!isNaN(val)) return val;
-            }
-        }
-
-        // ── Strategy 2: rendered HTML — the £X.XX inside the Total display ──
-        // Matches <div class="cp-body-large">£0.00</div>
-        const htmlMatch = html.match(/cp-body-large">\s*£([\d,]+(?:\.\d{2})?)/);
-        if (htmlMatch) {
-            const val = parseFloat(htmlMatch[1].replace(/,/g, ''));
-            if (!isNaN(val)) return val;
-        }
-
-        console.warn(`[FundRace] Could not parse amount for fundrace-${collegeId}. Check console for debug log.`);
-        return null;
-    }
+    // ── LIVE FETCH — Cloudflare Worker (aggregated) ──────────────────────────
+    // One request to the Worker; it fetches all 31 colleges server-side,
+    // parses amounts, caches the result for 2 min, and returns JSON.
+    const WORKER_URL = 'https://fundrace-proxy.alexanderfarren23.workers.dev/';
 
     async function fetchAllAmounts() {
-        const entries = Object.entries(JUSTGIVING_ID_MAP);
+        const res = await fetch(WORKER_URL);
+        if (!res.ok) throw new Error(`Worker HTTP ${res.status}`);
 
-        const results = await Promise.allSettled(
-            entries.map(([college, id]) =>
-                fetchCollegeAmount(id).then(amount => ({ college, amount }))
-            )
-        );
+        const data = await res.json();
 
         let successCount = 0;
-        results.forEach((result, i) => {
-            if (result.status === 'fulfilled' && result.value.amount !== null) {
-                const { college, amount } = result.value;
+        for (const [college, id] of Object.entries(JUSTGIVING_ID_MAP)) {
+            const amount = data[id];
+            if (amount !== null && amount !== undefined) {
                 const entry = FUNDS_DATA.find(c => c.college === college);
                 if (entry) { entry.raised_funds = amount; successCount++; }
             } else {
-                console.warn(`[FundRace] ${entries[i][0]}: ${result.reason ?? 'null amount'}`);
+                console.warn(`[FundRace] No data for ${college} (id: ${id})`);
             }
-        });
-
+        }
         return successCount;
     }
 
@@ -913,41 +883,28 @@ Working within our community is a huge aspect of what Wintercomfort does, gainin
         const leaderboard = document.querySelector('.leaderboard');
         leaderboard.innerHTML = '';
 
-        // ── DONATE HINT BANNER (doubles as status line) ──────────────────
-        const hint = document.createElement('div');
-        hint.className = 'leaderboard-donate-hint';
-
-        const statusSpan = document.createElement('span');
-        statusSpan.textContent = statusText;
-
-        const refreshBtn = document.createElement('button');
-        refreshBtn.className = 'leaderboard-refresh-btn';
-        refreshBtn.title = 'Refresh live totals';
-        refreshBtn.textContent = '↻';
-        refreshBtn.onclick = (e) => { e.preventDefault(); triggerRefresh(); };
-
-        hint.appendChild(statusSpan);
-        hint.appendChild(refreshBtn);
-        leaderboard.appendChild(hint);
-
-        // ── OVERALL GOAL BANNER ──────────────────────────────────────────
+        // ── OVERALL GOAL BANNER (includes refresh button + status) ──────
         const overallPct = Math.min((totalRaised / OVERALL_GOAL) * 100, 100);
         const goalBanner = document.createElement('div');
         goalBanner.className = 'goal-banner';
         goalBanner.innerHTML = `
             <div class="goal-banner-top">
-                <span class="goal-label">🎯 Overall Goal</span>
-                <span class="goal-amounts">
+                <div class="goal-hero">
                     <span class="goal-raised">£${totalRaised.toLocaleString()}</span>
-                    <span class="goal-sep"> / </span>
-                    <span class="goal-target">£${OVERALL_GOAL.toLocaleString()}</span>
-                </span>
+                    <span class="goal-raised-label">raised</span>
+                </div>
+                <button class="leaderboard-refresh-btn" title="Refresh live totals">↻</button>
+            </div>
+            <div class="goal-subtitle">
+                <span>${overallPct >= 100 ? '🏁 Goal reached!' : 'toward £' + OVERALL_GOAL.toLocaleString() + ' · ' + Math.round(overallPct) + '%'}</span>
+                <span class="goal-status">${statusText}</span>
             </div>
             <div class="goal-track">
                 <div class="goal-fill" style="width: ${overallPct}%"></div>
             </div>
-            <div class="goal-pct">${overallPct >= 100 ? '🏁 Goal reached!' : Math.round(overallPct) + '% of goal'}</div>
         `;
+        goalBanner.querySelector('.leaderboard-refresh-btn').onclick =
+            (e) => { e.preventDefault(); triggerRefresh(); };
         leaderboard.appendChild(goalBanner);
 
         // ── COLLEGE ROWS ─────────────────────────────────────────────────
@@ -1019,9 +976,9 @@ Working within our community is a huge aspect of what Wintercomfort does, gainin
         if (refreshing) return;
         refreshing = true;
 
-        // Disable the button and show loading state in the hint
+        // Disable the button and show loading state in the goal banner
         const btn = document.querySelector('.leaderboard-refresh-btn');
-        const span = document.querySelector('.leaderboard-donate-hint span');
+        const span = document.querySelector('.goal-status');
         if (btn)  { btn.disabled = true; btn.textContent = '…'; }
         if (span) span.textContent = '⏳ Updating...';
 
@@ -1029,12 +986,12 @@ Working within our community is a huge aspect of what Wintercomfort does, gainin
             const successCount = await fetchAllAmounts();
             const time = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
             const status = successCount > 0
-                ? `Updated ${time} · Tap your college to donate`
-                : 'Live data unavailable · Tap your college to donate';
+                ? `Updated ${time}`
+                : 'Live data unavailable';
             loadLeaderboard(status);
         } catch (e) {
             console.error('[FundRace] refresh failed:', e);
-            loadLeaderboard('Live data unavailable · Tap your college to donate');
+            loadLeaderboard('Live data unavailable');
         } finally {
             refreshing = false;
         }

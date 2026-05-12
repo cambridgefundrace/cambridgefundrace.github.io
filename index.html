@@ -616,7 +616,7 @@
                     <ul>
                         <li>
                             <span class="goal-text">Fastest college to raise £200</span>
-                            <span class="prize">St. John's — Day 15</span>
+                            <span class="prize">St. John's — Day 17</span>
                         </li>
                         <li>
                             <span class="goal-text">Biggest single donation</span>
@@ -1007,7 +1007,7 @@ Working within our community is a huge aspect of what Wintercomfort does, gainin
         const el = document.getElementById('fe-day-counter');
         if (!el) return;
         const start = new Date('2026-04-15T00:00:00');
-        const end   = new Date('2026-05-15T00:00:00');
+        const end   = new Date('2026-05-16T00:00:00');
         const now   = new Date();
         if (now < start) {
             const days = Math.ceil((start - now) / 864e5);
@@ -1016,7 +1016,7 @@ Working within our community is a huge aspect of what Wintercomfort does, gainin
             el.textContent = 'Competition ended';
         } else {
             const day = Math.floor((now - start) / 864e5) + 1;
-            el.textContent = `Day ${day} of 30`;
+            el.textContent = `Day ${day} of 31`;
         }
     }
 

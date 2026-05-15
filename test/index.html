@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
+    <title>Cambridge FundRace</title>
+    <link rel="icon" type="image/svg+xml" href="Images/favicon-fundrace.svg">
+    <link rel="apple-touch-icon" href="Images/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="fundrace.css">
+    <style>
+        /* ── DONATE LIVE (toggle) ── */
+        .donate-button { display: block !important; }
+        .coming-soon-block { display: flex !important; }
+
+        /* ── FUNDRACE EXPLAINER — 2×2 grid revamp ── */
+        .description.fe-revamp {
+            background: #1a1f3a;
+        }
+        .fe-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.4rem 2rem 1rem;
+            position: relative;
+        }
+        .fe-trophy {
+            font-size: 2rem;
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .fe-title {
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-align: center;
+            margin: 0;
+        }
+        .fe-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 0 14px 14px;
+        }
+        .fe-card {
+            border-radius: 10px;
+            padding: 1.1rem 1.3rem;
+        }
+        .fe-card--light {
+            background: #dce6f0;
+            color: #1a1f3a;
+        }
+        .fe-card--red {
+            color: #fff;
+        }
+        .fe-card--rules { background: #CC2936; }
+        .fe-card--rules .fe-card-heading {
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.35);
+            padding-bottom: 0.45rem;
+            margin-bottom: 0.7rem;
+        }
+        .fe-card--goal  { background: #CC2936; }
+        .fe-card-heading {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 0.55rem;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .fe-card p {
+            font-size: 0.9rem;
+            line-height: 1.55;
+            margin: 0;
+            color: inherit;
+        }
+        .fe-card--light p strong { color: #1a1f3a; }
+        .fe-card--red  p strong { color: #fff; }
+        .fe-insta-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-top: 0.75rem;
+            padding: 0.3rem 0.7rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            background: rgba(255,255,255,0.55);
+            color: #1a1f3a;
+            border: 1px solid rgba(26,31,58,0.15);
+            transition: background 0.15s;
+        }
+        .fe-insta-badge:hover { background: rgba(255,255,255,0.85); }
+        .fe-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+        .fe-card ul li {
+            font-size: 0.9rem;
+            line-height: 1.45;
+            padding-left: 1rem;
+            position: relative;
+            color: inherit;
+        }
+        .fe-card ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+        }
+        /* Bottom row: Rules card + Timeline side by side */
+        .fe-bottom {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 10px;
+            padding: 0 14px 14px;
+        }
+        /* ── MILESTONE TIMELINE ── */
+        .fe-milestone-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 1rem 1.4rem;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        .fe-milestone-label {
+            color: rgba(255,255,255,0.45);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 1rem;
+        }
+        .fe-milestones {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        .fe-milestone {
+            flex: 1;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,138,148,0.3);
+            border-radius: 12px;
+            padding: 1.1rem 1rem;
+            text-align: center;
+        }
+        .fe-milestone-emoji {
+            font-size: 2rem;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        .fe-milestone-date {
+            color: #ff8a94;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+        .fe-milestone-event {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.82rem;
+        }
+        .fe-milestone-connector {
+            display: flex;
+            align-items: center;
+            padding: 0 0.5rem;
+            flex-shrink: 0;
+        }
+        .fe-milestone-line { display: none; }
+        .fe-milestone-arrow {
+            color: rgba(255,138,148,0.75);
+            font-size: 2rem;
+            line-height: 1;
+        }
+        /* ── LIVE STATS BAR ── */
+        .fe-stats {
+            display: flex;
+            align-items: center;
+            margin-top: 0.85rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,138,148,0.2);
+            border-radius: 10px;
+            padding: 0.7rem 1rem;
+        }
+        .fe-stat {
+            flex: 1;
+            text-align: center;
+        }
+        .fe-stat-value {
+            color: #ff8a94;
+            font-weight: 700;
+            font-size: 1.15rem;
+            line-height: 1.2;
+        }
+        .fe-stat-label {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            margin-top: 0.2rem;
+        }
+        .fe-stat-divider {
+            width: 1px;
+            height: 34px;
+            background: rgba(255,138,148,0.2);
+            flex-shrink: 0;
+            margin: 0 0.5rem;
+        }
+
+        @media (max-width: 540px) {
+            .fe-milestone-wrapper { padding: 0.8rem 0.8rem; }
+            .fe-milestone { padding: 0.8rem 0.6rem; border-radius: 10px; }
+            .fe-milestone-emoji { font-size: 1.6rem; }
+            .fe-milestone-date  { font-size: 0.95rem; }
+            .fe-milestone-event { font-size: 0.75rem; }
+            .fe-milestone-connector { padding: 0 0.2rem; }
+            .fe-milestone-arrow { font-size: 1.5rem; }
+            .fe-stat-value { font-size: 1rem; }
+        }
+        @media (max-width: 540px) {
+            .fe-grid   { grid-template-columns: 1fr; }
+            .fe-bottom { grid-template-columns: 1fr; }
+            .fe-trophy { display: none; }
+            .fe-header { padding: 1.2rem 1rem 0.8rem; }
+        }
+
+        /* ── COLLEGES FULL BOX ── */
+        .colleges-full {
+            margin-top: 0.5rem;
+            padding: 0.6rem 0.85rem;
+            background: #fdf6ec;
+            border: 1px solid #f0c97a;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            color: #444;
+            line-height: 1.55;
+        }
+        .colleges-full-label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: #a06200;
+            margin-bottom: 0.3rem;
+        }
+
+        /* Hero amount */
+        .goal-hero {
+            display: flex;
+            align-items: baseline;
+            gap: 0.4rem;
+        }
+        .goal-raised { font-size: 2.8rem !important; font-weight: 800; color: #fff !important; line-height: 1; }
+        .goal-raised-label { font-size: 1.1rem; color: rgba(255,255,255,0.55); font-weight: 500; }
+        .goal-confetti { font-size: 2.4rem; line-height: 1; align-self: center; }
+        #fe-total-raised { font-size: 1.7rem; }
+        .fe-stat--inline { display: flex; align-items: baseline; justify-content: center; gap: 0.3rem; }
+        .name-trophy { font-size: 1.9rem; line-height: 1; filter: drop-shadow(0 2px 4px rgba(180,130,0,0.5)); margin-left: 0.3rem; vertical-align: middle; }
+
+        /* Donate button: full-width on mobile, anchored above leaderboard */
+        .donate-button + .description { margin-top: 1.5rem; }
+        .donate-button {
+            display: block;
+            width: fit-content;
+            margin: 0 auto 0;
+            padding: 15px 40px;
+            background: #CC2936;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .donate-button:hover {
+            background: #a51c28;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+        }
+        .donate-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        @media (max-width: 480px) {
+            .donate-button {
+                width: calc(100% - 20px);
+                font-size: 1.1em;
+            }
+        }
+
+        /* ── INSTAGRAM FEED HEIGHT ── */
+        /* right-column is stretch-matched to the leaderboard by the flex parent;
+           min-height:0 + overflow:hidden prevents the instagram-feed from escaping it */
+        .right-column   { min-height: 0; overflow: hidden; }
+        /* flex: 1 1 0 (not auto) so the feed fills available space
+           rather than inflating to its content size */
+        .instagram-feed { min-height: 0; overflow: hidden; flex: 1 1 0 !important; }
+        .feed-container { min-height: 0; overflow-y: auto; overflow-x: hidden; }
+
+        /* On mobile the columns stack so there's no height constraint from the
+           leaderboard — cap the feed explicitly and hide the horizontal scroll
+           that Instagram embeds (min-width 326px) would otherwise trigger */
+        @media (max-width: 768px) {
+            .right-column   { overflow: visible; }
+            .instagram-feed { flex: 0 0 auto !important; overflow: visible; }
+            .feed-container { max-height: 400px; overflow-y: auto; overflow-x: hidden; }
+            .feed-container .instagram-media { max-width: 100% !important; min-width: 0 !important; }
+            .goal-raised { font-size: 1.9rem !important; }
+            .goal-confetti { font-size: 1.7rem; }
+            .donate-button { padding: 12px 30px; font-size: 1em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- HEADER -->
+        <div class="site-header">
+            <div class="site-header-inner">
+                <div class="site-header-text">
+                    <div class="header-cambridge">CAMBRIDGE</div>
+                    <div class="header-rule"></div>
+                    <div class="header-fundrace"><span class="header-fund">Fund</span><span class="header-race">Race</span></div>
+                    <div class="header-tagline">31 colleges · one community · one cause</div>
+                </div>
+                <!-- Bridge of Sighs illustration -->
+                <svg class="header-bridge" xmlns="http://www.w3.org/2000/svg" viewBox="80 180 240 180" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+              <g transform="translate(80, 212)">
+                <rect x="0" y="16" width="240" height="76" fill="#1a1f3a"/>
+                <rect x="0" y="6" width="240" height="12" fill="#1a1f3a"/>
+                <g fill="#1a1f3a">
+                  <rect x="113.5" y="0" width="9" height="8"/>
+                  <rect x="98.5"  y="0" width="9" height="8"/>
+                  <rect x="83.5"  y="0" width="9" height="8"/>
+                  <rect x="68.5"  y="0" width="9" height="8"/>
+                  <rect x="53.5"  y="0" width="9" height="8"/>
+                  <rect x="38.5"  y="0" width="9" height="8"/>
+                  <rect x="23.5"  y="0" width="9" height="8"/>
+                  <rect x="8.5"   y="0" width="9" height="8"/>
+                  <rect x="128.5" y="0" width="9" height="8"/>
+                  <rect x="143.5" y="0" width="9" height="8"/>
+                  <rect x="158.5" y="0" width="9" height="8"/>
+                  <rect x="173.5" y="0" width="9" height="8"/>
+                  <rect x="188.5" y="0" width="9" height="8"/>
+                  <rect x="203.5" y="0" width="9" height="8"/>
+                  <rect x="218.5" y="0" width="9" height="8"/>
+                </g>
+                <g fill="#CC2936">
+                  <rect x="19" y="-10" width="3" height="12"/>
+                  <rect x="15" y="-8"  width="11" height="3"/>
+                  <polygon points="20.5,-15 23,-10 20.5,-5 18,-10"/>
+                  <rect x="94" y="-10" width="3" height="12"/>
+                  <rect x="90" y="-8"  width="11" height="3"/>
+                  <polygon points="95.5,-15 98,-10 95.5,-5 93,-10"/>
+                  <rect x="139" y="-10" width="3" height="12"/>
+                  <rect x="135" y="-8"  width="11" height="3"/>
+                  <polygon points="140.5,-15 143,-10 140.5,-5 138,-10"/>
+                  <rect x="214" y="-10" width="3" height="12"/>
+                  <rect x="210" y="-8"  width="11" height="3"/>
+                  <polygon points="215.5,-15 218,-10 215.5,-5 213,-10"/>
+                </g>
+                <g transform="translate(10, 26)">
+                  <path d="M0,58 L1,16 A17,17 0 0,1 31,16 L32,58 Z" fill="#B8CDD9"/>
+                  <path d="M0,16 A16,16 0 0,1 32,16" fill="none" stroke="#1a1f3a" stroke-width="2"/>
+                  <line x1="8"  y1="58" x2="8"  y2="16" stroke="#1a1f3a" stroke-width="1.8"/>
+                  <line x1="16" y1="58" x2="16" y2="2"  stroke="#1a1f3a" stroke-width="1.8"/>
+                  <line x1="24" y1="58" x2="24" y2="16" stroke="#1a1f3a" stroke-width="1.8"/>
+                  <line x1="1"  y1="36" x2="31" y2="36" stroke="#1a1f3a" stroke-width="1.5"/>
+                  <line x1="1"  y1="48" x2="31" y2="48" stroke="#1a1f3a" stroke-width="1.5"/>
+                </g>
+                <g transform="translate(56, 21)">
+                  <path d="M0,62 L1,16 A17,17 0 0,1 31,16 L32,62 Z" fill="#B8CDD9"/>
+                  <path d="M0,16 A16,16 0 0,1 32,16" fill="none" stroke="#1a1f3a" stroke-width="2"/>
+                  <line x1="8"  y1="62" x2="8"  y2="16" stroke="#1a1f3a" stroke-width="1.8"/>
+                  <line x1="16" y1="62" x2="16" y2="2"  stroke="#1a1f3a" stroke-width="1.8"/>
+                  <line x1="24" y1="62" x2="24" y2="16" stroke="#1a1f3a" stroke-width="1.8"/>
+                  <line x1="1"  y1="38" x2="31" y2="38" stroke="#1a1f3a" stroke-width="1.5"/>
+                  <line x1="1"  y1="51" x2="31" y2="51" stroke="#1a1f3a" stroke-width="1.5"/>
+                </g>
+                <g transform="translate(102, 16)">
+                  <path d="M0,66 L1,16 A17,17 0 0,1 31,16 L32,66 Z" fill="#B8CDD9"/>
+                  <path d="M0,16 A16,16 0 0,1 32,16" fill="none" stroke="#1a1f3a" stroke-width="2"/>
+                  <line x1="8"  y1="66" x2="8"  y2="16" stroke="#1a1f3a" stroke-width="1.8"/>
+                  <line x1="16" y1="66" x2="16" y2="2"  stroke="#1a1f3a" stroke-width="1.8"/>
+                  <line x1="24" y1="66" x2="24" y2="16" stroke="#1a1f3a" stroke-width="1.8"/>
+                  <line x1="1"  y1="40" x2="31" y2="40" stroke="#1a1f3a" stroke-width="1.5"/>
+                  <line x1="1"  y1="54" x2="31" y2="54" stroke="#1a1f3a" stroke-width="1.5"/>
+                </g>
+                <g transform="translate(148, 21)">
+                  <path d="M0,62 L1,16 A17,17 0 0,1 31,16 L32,62 Z" fill="#B8CDD9"/>
+                  <path d="M0,16 A16,16 0 0,1 32,16" fill="none" stroke="#1a1f3a" stroke-width="2"/>
+                  <line x1="8"  y1="62" x2="8"  y2="16" stroke="#1a1f3a" stroke-width="1.8"/>
+                  <line x1="16" y1="62" x2="16" y2="2"  stroke="#1a1f3a" stroke-width="1.8"/>
+                  <line x1="24" y1="62" x2="24" y2="16" stroke="#1a1f3a" stroke-width="1.8"/>
+                  <line x1="1"  y1="38" x2="31" y2="38" stroke="#1a1f3a" stroke-width="1.5"/>
+                  <line x1="1"  y1="51" x2="31" y2="51" stroke="#1a1f3a" stroke-width="1.5"/>
+                </g>
+                <g transform="translate(194, 26)">
+                  <path d="M0,58 L1,16 A17,17 0 0,1 31,16 L32,58 Z" fill="#B8CDD9"/>
+                  <path d="M0,16 A16,16 0 0,1 32,16" fill="none" stroke="#1a1f3a" stroke-width="2"/>
+                  <line x1="8"  y1="58" x2="8"  y2="16" stroke="#1a1f3a" stroke-width="1.8"/>
+                  <line x1="16" y1="58" x2="16" y2="2"  stroke="#1a1f3a" stroke-width="1.8"/>
+                  <line x1="24" y1="58" x2="24" y2="16" stroke="#1a1f3a" stroke-width="1.8"/>
+                  <line x1="1"  y1="36" x2="31" y2="36" stroke="#1a1f3a" stroke-width="1.5"/>
+                  <line x1="1"  y1="48" x2="31" y2="48" stroke="#1a1f3a" stroke-width="1.5"/>
+                </g>
+                <path d="M0,92 L0,128 Q120,72 240,128 L240,92 Q120,46 0,92 Z" fill="#1a1f3a"/>
+                <path d="M14,92 Q120,56 226,92 Q120,64 14,92 Z" fill="#B8CDD9"/>
+                <path d="M14,92 Q120,56 226,92" fill="none" stroke="#CC2936" stroke-width="1.8" opacity="0.9"/>
+                <path d="M0,130 Q40,124 120,126 Q200,128 240,130 L240,152 Q200,150 120,150 Q40,150 0,152 Z" fill="#6a9aaa" opacity="0.25"/>
+                <path d="M18,134 Q60,130 120,132 Q180,134 222,131" fill="none" stroke="#4a7888" stroke-width="1" opacity="0.7"/>
+                <path d="M28,142 Q70,138 120,140 Q170,142 212,139" fill="none" stroke="#4a7888" stroke-width="0.8" opacity="0.5"/>
+              </g>
+            </svg>
+            </div><!-- /.site-header-inner -->
+        </div><!-- /.site-header -->
+
+        <!-- DONATE BUTTON — top of page -->
+        <button class="donate-button" onclick="(function(){ const el = document.getElementById('donate-btn-2'); const top = window.scrollY + el.getBoundingClientRect().top - window.innerHeight * 0.1; window.scrollTo({top, behavior:'smooth'}); })()">
+            ► See results ◄
+        </button>
+
+        <!-- DESCRIPTION — 2×2 grid revamp -->
+        <div class="description fe-revamp">
+
+            <div class="fe-header">
+                <h2 class="fe-title">What is the FundRace?</h2>
+            </div>
+
+            <div class="fe-grid">
+                <div class="fe-card fe-card--light">
+                    <div class="fe-card-heading">🤝 Mission</div>
+                    <p>This is a <strong>good-faith</strong> fundraising competition between students of the 31 colleges of the University of Cambridge to show that students are engaged in giving back to the local community. The competition is decided by which college raises the most funds, with secret prizes for secondary goals too.</p>
+                    <a class="fe-insta-badge" href="https://www.instagram.com/cambridgefundrace" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="flex-shrink:0;display:block"><defs><linearGradient id="ig-g" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f09433"/><stop offset="25%" stop-color="#e6683c"/><stop offset="50%" stop-color="#dc2743"/><stop offset="75%" stop-color="#cc2366"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs><path fill="url(#ig-g)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg> @cambridgefundrace</a>
+                </div>
+                <div class="fe-card fe-card--light">
+                    <div class="fe-card-heading">🏠 Cause</div>
+                    <p>All funds go directly to <strong><a class="wc-link" href="https://wintercomfort.org.uk/about-us/" target="_blank" rel="noopener">Wintercomfort</a></strong>, who have helped those in need of shelter, food and clothes in Cambridge for 30+ years.
+                    Last year, Wintercomfort supported 800 people, including 100+ women through their day centre which provides essential welfare year-round.</p>
+                    <a class="fe-insta-badge" href="https://www.instagram.com/wintercomfortcambridge" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="flex-shrink:0;display:block"><defs><linearGradient id="ig-g2" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f09433"/><stop offset="25%" stop-color="#e6683c"/><stop offset="50%" stop-color="#dc2743"/><stop offset="75%" stop-color="#cc2366"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs><path fill="url(#ig-g2)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg> @wintercomfortcambridge</a>
+                </div>
+            </div>
+
+            <!-- BOTTOM ROW: merged Rules card + Timeline -->
+            <div class="fe-bottom">
+                <div class="fe-card fe-card--red fe-card--rules">
+                    <div class="fe-card-heading">📋 Rules of the FundRace</div>
+                    <ul>
+                        <li>Each college is represented by 1-2 students who volunteer as <strong>FundRacers</strong></li>
+                        <li>FundRacers will represent their college online and must organise at least 1 event</li>
+                        <li>We encourage donations of <strong>£5</strong> so everyone (especially students) can contribute</li>
+                    </ul>
+                </div>
+                <div class="fe-milestone-wrapper">
+                    <div class="fe-milestones">
+                        <div class="fe-milestone">
+                            <div class="fe-milestone-emoji">🚀</div>
+                            <div class="fe-milestone-date">15 April</div>
+                            <div class="fe-milestone-event">Fundraising begins</div>
+                        </div>
+                        <div class="fe-milestone-connector">
+                            <div class="fe-milestone-line"></div>
+                            <div class="fe-milestone-arrow">→</div>
+                        </div>
+                        <div class="fe-milestone">
+                            <div class="fe-milestone-emoji">🏁</div>
+                            <div class="fe-milestone-date">15 May</div>
+                            <div class="fe-milestone-event">Fundraising closes</div>
+                        </div>
+                    </div>
+                    <div class="fe-stats">
+                        <div class="fe-stat">
+                            <div class="fe-stat-value" id="fe-day-counter">—</div>
+                        </div>
+                        <div class="fe-stat-divider"></div>
+                        <div class="fe-stat fe-stat--inline">
+                            <div class="fe-stat-value" id="fe-total-raised">£—</div>
+                            <div class="fe-stat-label">raised</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- WINTERCOMFORT -->
+        <div class="about-card wintercomfort-card">
+            <h2>About Wintercomfort</h2>
+
+            <!-- Hero banner: skyline image + white logo centred -->
+            <div class="wc-banner">
+                <div class="wc-banner-left">
+                    <img class="wc-banner-logo" src="Images/wintercomfort-white-logo.svg" alt="Wintercomfort">
+                </div>
+                <div class="wc-banner-right">
+                    <img class="wc-skyline" src="Images/wintercomfort-skyline.jpg" alt="Cambridge skyline">
+                </div>
+            </div>
+
+            <div class="wc-inner">
+                <div class="wc-text">
+                    <p><b>About: </b>Wintercomfort is a Cambridge-based charity that has supported people experiencing homelessness and poverty for over 30 years. They provide a safe, welcoming day centre offering hot meals, showers, clothing, and a range of support services to help people rebuild their lives.</p>
+                    <p><b>Services: </b>Their dedicated team works with individuals facing complex challenges — from mental health and addiction to unemployment and social isolation — providing practical help and human connection every single day.</p>
+                    <p><b>Donations: </b>100% of funds raised through FundRace will go directly to Wintercomfort to support their work in our city.</p>
+                    <p><b>Stories:</b> Find inspiring stories of those who found refuge and support with Wintercomfort <strong><a class="wc-link" href="https://wintercomfort.org.uk/stories/">here</a></strong>.</p>
+                    <div class="wc-learn-more-wrap">
+                        <a class="wc-learn-more-btn" href="https://wintercomfort.org.uk/about-us/" target="_blank" rel="noopener">Learn more</a>
+                    </div>
+                </div>
+                <div class="wc-stats">
+                    <div class="stat-block">
+                        <div class="stat-number">30+</div>
+                        <div class="stat-text">
+                            <span class="stat-label">Years serving Cambridge</span>
+                            <span class="stat-desc">Continuously supporting the community since the early 1990s</span>
+                        </div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-number">800</div>
+                        <div class="stat-text">
+                            <span class="stat-label">People helped last year</span>
+                            <span class="stat-desc">Hot meals, shelter, clothing &amp; support for hundreds annually</span>
+                        </div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-number">365</div>
+                        <div class="stat-text">
+                            <span class="stat-label">Day centre, open daily</span>
+                            <span class="stat-desc">A warm, safe space at the heart of Cambridge every day of the year</span>
+                        </div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-number">£0</div>
+                        <div class="stat-text">
+                            <span class="stat-label">Cost to those who need it</span>
+                            <span class="stat-desc">All services are free — funded entirely by donations like yours</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DONATE BUTTON — scrolls to leaderboard -->
+        <button id="donate-btn-2" class="donate-button" onclick="document.getElementById('leaderboard-section').scrollIntoView({behavior:'smooth'})">
+            Final Leaderboard ↓
+        </button>
+
+        <!-- THANK YOU BLOCK -->
+        <div class="coming-soon-block">
+            <div class="cs-flag">🙏</div>
+            <h2>Thank <span>You</span></h2>
+            <p>To every student who donated, fundraised, or simply spread the word.<br>You've helped show that Cambridge students care about the local community and harness our college rivalries for good.</p>
+        </div>
+
+        <!-- MAIN CONTENT: leaderboard + prizes + feed -->
+        <div id="leaderboard-section" class="main-content content-wrapper">
+            <div class="leaderboard-container">
+                <div class="leaderboard">
+                    <!-- Leaderboard will be populated dynamically -->
+                </div>
+            </div>
+            <div class="right-column">
+                <div class="secondary-goals">
+                    <h2>Secondary Goals</h2>
+                    <ul>
+                        <li>
+                            <span class="goal-text">Fastest college to raise £200</span>
+                            <span class="prize">St. John's — Day 17</span>
+                        </li>
+                        <li>
+                            <span class="goal-text">Biggest single donation</span>
+                            <span class="prize">Selwyn — £146 from Albie Esparza</span>
+                        </li>
+                        <li>
+                            <span class="goal-text">Most individual donations</span>
+                            <span class="prize">Gonville &amp; Caius — 64 donations</span>
+                        </li>
+                        <li>
+                            <span class="goal-text">Most creative fundraising event</span>
+                            <span class="prize">To be announced...</span>
+                        </li>
+                        <!-- <li>
+                            <span class="goal-text">Best social media engagement</span>
+                            <span class="prize">???</span>
+                        </li> -->
+                    </ul>
+                </div>
+                <div class="instagram-feed">
+                    <h2>Instagram Feed</h2>
+                    <div class="feed-container">
+                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DXzq8p7tFoS/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/reel/DXzq8p7tFoS/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/reel/DXzq8p7tFoS/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">A post shared by Cambridge FundRace (@cambridgefundrace)</a></p></div></blockquote>
+                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DW_UbKLty8V/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/reel/DW_UbKLty8V/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/reel/DW_UbKLty8V/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">A post shared by Cambridge FundRace (@cambridgefundrace)</a></p></div></blockquote>
+                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/DWrCZ5ODEzk/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/DWrCZ5ODEzk/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/DWrCZ5ODEzk/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">A post shared by Cambridge FundRace (@cambridgefundrace)</a></p></div></blockquote>
+                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DWbyUDksdQ_/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/reel/DWbyUDksdQ_/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/reel/DWbyUDksdQ_/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">A post shared by Cambridge FundRace (@cambridgefundrace)</a></p></div></blockquote>
+                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DWL1NoVNauf/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/reel/DWL1NoVNauf/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/reel/DWL1NoVNauf/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">A post shared by Cambridge FundRace (@cambridgefundrace)</a></p></div></blockquote>
+                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DV7ES0tjObG/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/reel/DV7ES0tjObG/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/reel/DV7ES0tjObG/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">A post shared by Cambridge FundRace (@cambridgefundrace)</a></p></div></blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM SPLIT: Help Us + Organisers -->
+        <div class="bottom-split">
+
+            <!-- FUNDRACERS -->
+            <div class="about-card signup-card">
+                <div class="card-heading-banner">
+                    <h2 class="section-heading">FundRacers</h2>
+                </div>
+                <div class="about-card-body">
+                <p class="signup-intro">Students who represented their colleges in the 2026 Cambridge FundRace.</p>
+                <div class="fundracer-grid">
+                    <div class="fundracer-entry"><img class="fundracer-crest" src="Images/logos/DOW.png" alt="Downing"><div class="fundracer-info"><div class="fundracer-college">Downing</div><div class="fundracer-names">Eleanor Jones</div></div></div>
+                    <div class="fundracer-entry"><img class="fundracer-crest" src="Images/logos/GIR.png" alt="Girton"><div class="fundracer-info"><div class="fundracer-college">Girton</div><div class="fundracer-names">Jenna Min Schmidt</div></div></div>
+                    <div class="fundracer-entry"><img class="fundracer-crest" src="Images/logos/CAI.png" alt="Gonville &amp; Caius"><div class="fundracer-info"><div class="fundracer-college">Gonville &amp; Caius</div><div class="fundracer-names">Max Ferrara</div></div></div>
+                    <div class="fundracer-entry"><img class="fundracer-crest" src="Images/logos/JES.png" alt="Jesus"><div class="fundracer-info"><div class="fundracer-college">Jesus</div><div class="fundracer-names">Constantin Iosub</div></div></div>
+                    <div class="fundracer-entry"><img class="fundracer-crest" src="Images/logos/PET.png" alt="Peterhouse"><div class="fundracer-info"><div class="fundracer-college">Peterhouse</div><div class="fundracer-names">Shivvy Jariwala</div></div></div>
+                    <div class="fundracer-entry"><img class="fundracer-crest" src="Images/logos/SID.png" alt="Sidney Sussex"><div class="fundracer-info"><div class="fundracer-college">Sidney Sussex</div><div class="fundracer-names">Lawrence Berry</div></div></div>
+                    <div class="fundracer-entry"><img class="fundracer-crest" src="Images/logos/JN.png" alt="St John's"><div class="fundracer-info"><div class="fundracer-college">St John's</div><div class="fundracer-names">Alex Farren, Johnny Kelly</div></div></div>
+                    <div class="fundracer-entry"><img class="fundracer-crest" src="Images/logos/T.png" alt="Trinity"><div class="fundracer-info"><div class="fundracer-college">Trinity</div><div class="fundracer-names">Anna Johns, Eva Kelly</div></div></div>
+                </div>
+                </div><!-- /.about-card-body -->
+            </div>
+
+            <!-- ORGANISERS -->
+            <div class="about-card organisers-card">
+                <div class="card-heading-banner">
+                    <h2 class="section-heading">About the Organisers</h2>
+                </div>
+                <div class="about-card-body">
+                <div class="organiser-layout">
+
+                    <!-- Left 2/3: student organisers -->
+                    <div class="organiser-students">
+                        <div class="organiser-avatars-row">
+                            <div class="organiser">
+                                <img class="organiser-avatar" src="Images/Alex.jpg" alt="AF"></img>
+                                <div class="name">Alex Farren</div>
+                            </div>
+                            <div class="organiser">
+                                <img class="organiser-avatar" src="Images/Johnny.jpg" alt="JK"></img>
+                                <div class="name">Johnny Kelly</div>
+                            </div>
+                        </div>
+                        <p class="organiser-contact">cambridgefundrace@gmail.com</p>
+                        <p class="organiser-shared-bio">
+                            <b>Who? </b>We're two University of Cambridge students who wanted to channel the natural rivalry between colleges into something benefitting the local community.
+                            <br>
+                            <b>Why? </b>Both of us did an undergrad in Dublin, where the issue of homelesness is also impossible to ignore. We believe students can have a huge impact if we make the effort.</p>
+                    <div class="funds-notice">
+                    🔒 Neither organiser has access to donated funds. All funds go directly to Wintercomfort.
+                </div>
+                    </div>
+
+                    <!-- Red divider -->
+                    <div class="organiser-main-divider"></div>
+
+                    <!-- Right 1/3: Wintercomfort rep -->
+                    <div class="organiser-rep">
+                        <!-- Photo+name left, WC logo right — horizontal row -->
+                        <div class="rep-inner-row">
+                            <div class="organiser">
+                                <img class="organiser-avatar-james" src="Images/James.jpg" alt="JH">
+                                <div class="name">James Holden</div>
+                            </div>
+                            <div class="rep-wc-logo-badge">
+                                <img src="Images/wintercomfort-white-logo.svg" alt="Wintercomfort" class="rep-wc-logo-img">
+                            </div>
+                        </div>
+                        <p class="organiser-contact">fundraising@wintercomfort.org.uk</p>
+                        <p class="organiser-shared-bio">
+                            <b>Who? </b> Fundraising Manager.
+                            <br>
+                            <b>Message: </b>
+                            Thank you for getting on board with this fantastic fundraising challenge!
+Working within our community is a huge aspect of what Wintercomfort does, gaining awareness and support from our city to help us to fulfil our essential welfare provision and supporting services to help us to empower people rebuild their lives beyond homelessness and to achieve long-term, positive change in their lives.</p>
+                    </div>
+
+                </div>
+                </div><!-- /.about-card-body -->
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+    // ── JUSTGIVING URL IDs (lowercase, matching justgiving.com/page/fundrace-{id}) ──
+    const JUSTGIVING_ID_MAP = {
+        "Christ's College":        "ch",
+        "Churchill College":       "chu",
+        "Clare College":           "cl",
+        "Clare Hall":              "clh",
+        "Corpus Christi College":  "cc",
+        "Darwin College":          "dar",
+        "Downing College":         "dow",
+        "Emmanuel College":        "em",
+        "Fitzwilliam College":     "fit",
+        "Girton College":          "gir",
+        "Gonville & Caius College":"cai",
+        "Homerton College":        "hom",
+        "Hughes Hall":             "hug",
+        "Jesus College":           "jes",
+        "King's College":          "k",
+        "Lucy Cavendish College":  "luc",
+        "Magdalene College":       "mag",
+        "Murray Edwards College":  "mur",
+        "Newnham College":         "new",
+        "Pembroke College":        "pem",
+        "Peterhouse":              "pet",
+        "Queens' College":         "q",
+        "Robinson College":        "rob",
+        "Selwyn College":          "sel",
+        "Sidney Sussex College":   "sid",
+        "St Catharine's College":  "cat",
+        "St Edmund's College":     "ed",
+        "St John's College":       "jn",
+        "Trinity College":         "t",
+        "Trinity Hall":            "th",
+        "Wolfson College":         "w"
+    };
+
+    // ── LIVE FETCH — Cloudflare Worker (aggregated) ──────────────────────────
+    // One request to the Worker; it fetches all 31 colleges server-side,
+    // parses amounts, caches the result for 2 min, and returns JSON.
+    const WORKER_URL = 'https://fundrace-proxy.alexanderfarren23.workers.dev/';
+
+    async function fetchAllAmounts() {
+        const res = await fetch(WORKER_URL);
+        if (!res.ok) throw new Error(`Worker HTTP ${res.status}`);
+
+        const data = await res.json();
+
+        let successCount = 0;
+        for (const [college, id] of Object.entries(JUSTGIVING_ID_MAP)) {
+            const amount = data[id];
+            if (amount !== null && amount !== undefined) {
+                const entry = FUNDS_DATA.find(c => c.college === college);
+                if (entry) { entry.raised_funds = amount; successCount++; }
+            } else {
+                console.warn(`[FundRace] No data for ${college} (id: ${id})`);
+            }
+        }
+        return successCount;
+    }
+
+    function getCollegeAbbrev(collegeName) {
+        const abbrevMap = {
+            "Christ's College": "CH",
+            "Churchill College": "CHU",
+            "Clare College": "CL",
+            "Clare Hall": "CLH",
+            "Corpus Christi College": "CC",
+            "Darwin College": "DAR",
+            "Downing College": "DOW",
+            "Emmanuel College": "EM",
+            "Fitzwilliam College": "FIT",
+            "Girton College": "GIR",
+            "Gonville & Caius College": "CAI",
+            "Homerton College": "HOM",
+            "Hughes Hall": "HUG",
+            "Jesus College": "JES",
+            "King's College": "K",
+            "Lucy Cavendish College": "LUC",
+            "Magdalene College": "MAG",
+            "Murray Edwards College": "MUR",
+            "Newnham College": "NEW",
+            "Pembroke College": "PEM",
+            "Peterhouse": "PET",
+            "Queens' College": "Q",
+            "Robinson College": "ROB",
+            "Selwyn College": "SEL",
+            "Sidney Sussex College": "SID",
+            "St Catharine's College": "CAT",
+            "St Edmund's College": "ED",
+            "St John's College": "JN",
+            "Trinity College": "T",
+            "Trinity Hall": "TH",
+            "Wolfson College": "W"
+        };
+        return abbrevMap[collegeName] || collegeName.substring(0, 3).toUpperCase();
+    }
+
+    const OVERALL_GOAL = 6000;
+    const COLLEGE_GOAL = 200;
+
+    const FUNDS_DATA = [
+        { college: "Christ's College",        raised_funds: 0 },
+        { college: "Churchill College",        raised_funds: 0 },
+        { college: "Clare College",            raised_funds: 0 },
+        { college: "Clare Hall",               raised_funds: 0 },
+        { college: "Corpus Christi College",   raised_funds: 0 },
+        { college: "Darwin College",           raised_funds: 0 },
+        { college: "Downing College",          raised_funds: 0 },
+        { college: "Emmanuel College",         raised_funds: 0 },
+        { college: "Fitzwilliam College",      raised_funds: 0 },
+        { college: "Girton College",           raised_funds: 0 },
+        { college: "Gonville & Caius College", raised_funds: 0 },
+        { college: "Homerton College",         raised_funds: 0 },
+        { college: "Hughes Hall",              raised_funds: 0 },
+        { college: "Jesus College",            raised_funds: 0 },
+        { college: "King's College",           raised_funds: 0 },
+        { college: "Lucy Cavendish College",   raised_funds: 0 },
+        { college: "Magdalene College",        raised_funds: 0 },
+        { college: "Murray Edwards College",   raised_funds: 0 },
+        { college: "Newnham College",          raised_funds: 0 },
+        { college: "Pembroke College",         raised_funds: 0 },
+        { college: "Peterhouse",               raised_funds: 0 },
+        { college: "Queens' College",          raised_funds: 0 },
+        { college: "Robinson College",         raised_funds: 0 },
+        { college: "Selwyn College",           raised_funds: 0 },
+        { college: "Sidney Sussex College",    raised_funds: 0 },
+        { college: "St Catharine's College",   raised_funds: 0 },
+        { college: "St Edmund's College",      raised_funds: 0 },
+        { college: "St John's College",        raised_funds: 0 },
+        { college: "Trinity College",          raised_funds: 0 },
+        { college: "Trinity Hall",             raised_funds: 0 },
+        { college: "Wolfson College",          raised_funds: 0 },
+    ];
+
+    function loadLeaderboard(statusText = '') {
+        const data = FUNDS_DATA;
+        data.sort((a, b) => b.raised_funds - a.raised_funds);
+        const totalRaised = data.reduce((sum, c) => sum + c.raised_funds, 0);
+        const totalEl = document.getElementById('fe-total-raised');
+        if (totalEl) totalEl.textContent = '£' + totalRaised.toLocaleString();
+        const leaderboard = document.querySelector('.leaderboard');
+        leaderboard.innerHTML = '';
+
+        // Goal banner (no progress bar, no refresh button)
+        const goalBanner = document.createElement('div');
+        goalBanner.className = 'goal-banner';
+        goalBanner.innerHTML = `
+            <div class="goal-banner-top">
+                <div class="goal-hero">
+                    <span class="goal-confetti">🎉</span>
+                    <span class="goal-raised">£${totalRaised.toLocaleString()}</span>
+                    <span class="goal-raised-label">raised</span>
+                </div>
+            </div>
+        `;
+        leaderboard.appendChild(goalBanner);
+
+        // Top 10 rows (div, not <a>)
+        const topAmount = data[0]?.raised_funds || 0;
+        data.slice(0, 10).forEach((college, index) => {
+            const rank = index + 1;
+            const amount = college.raised_funds;
+            const abbrev = getCollegeAbbrev(college.college);
+            let itemClass = 'college-item';
+            if (rank === 1) itemClass += ' top-1';
+            else if (rank === 2) itemClass += ' top-2';
+            else if (rank === 3) itemClass += ' top-3';
+            const item = document.createElement('div');
+            item.className = itemClass;
+            const collegePct = topAmount > 0 ? (amount / topAmount) * 100 : 0;
+            item.style.setProperty('--bar-pct', `${collegePct}%`);
+            const logoDiv = document.createElement('div');
+            logoDiv.className = 'logo';
+            const logoImg = document.createElement('img');
+            logoImg.src = `Images/logos/${abbrev}.png`;
+            logoImg.alt = college.college;
+            logoImg.style.width = '100%';
+            logoImg.style.height = '100%';
+            logoImg.style.objectFit = 'contain';
+            logoImg.onerror = function() { logoDiv.textContent = abbrev; logoImg.remove(); };
+            logoDiv.appendChild(logoImg);
+            const rankDiv = document.createElement('div');
+            rankDiv.className = 'rank';
+            rankDiv.textContent = rank <= 3 ? `${rank}` : `${rank}.`;
+            const middleDiv = document.createElement('div');
+            middleDiv.className = 'college-middle';
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'college-name';
+            nameDiv.textContent = college.college;
+            if (rank === 1) {
+                const trophy = document.createElement('span');
+                trophy.className = 'name-trophy';
+                trophy.textContent = '🏆';
+                nameDiv.appendChild(trophy);
+            }
+            middleDiv.appendChild(nameDiv);
+            const amountDiv = document.createElement('div');
+            amountDiv.className = 'amount';
+            amountDiv.textContent = `£${amount.toLocaleString()}`;
+            item.appendChild(rankDiv);
+            item.appendChild(logoDiv);
+            item.appendChild(middleDiv);
+            item.appendChild(amountDiv);
+            leaderboard.appendChild(item);
+        });
+
+        // 11+ aggregate row
+        const remainder = data.slice(10).filter(c => c.raised_funds > 0);
+        if (remainder.length > 0) {
+            const remainderTotal = remainder.reduce((sum, c) => sum + c.raised_funds, 0);
+            const row = document.createElement('div');
+            row.className = 'college-item remainder-row';
+            const rankDiv = document.createElement('div');
+            rankDiv.className = 'rank';
+            rankDiv.textContent = '11+';
+            const crestsDiv = document.createElement('div');
+            crestsDiv.className = 'remainder-crests';
+            remainder.forEach(college => {
+                const abbrev = getCollegeAbbrev(college.college);
+                const img = document.createElement('img');
+                img.src = `Images/logos/${abbrev}.png`;
+                img.alt = college.college;
+                img.title = college.college;
+                img.className = 'remainder-crest';
+                img.onerror = function() { this.remove(); };
+                crestsDiv.appendChild(img);
+            });
+            const amountDiv = document.createElement('div');
+            amountDiv.className = 'amount';
+            amountDiv.textContent = `£${remainderTotal.toLocaleString()}`;
+            row.appendChild(rankDiv);
+            row.appendChild(crestsDiv);
+            row.appendChild(amountDiv);
+            leaderboard.appendChild(row);
+        }
+    }
+
+    const REFRESH_INTERVAL_MS = 5 * 60 * 1000; // auto-refresh every 5 minutes
+    let refreshing = false;
+
+    async function triggerRefresh() {
+        if (refreshing) return;
+        refreshing = true;
+
+        const span = document.querySelector('.goal-status');
+        if (span) span.textContent = '⏳ Updating...';
+
+        try {
+            const successCount = await fetchAllAmounts();
+            const time = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+            const status = successCount > 0
+                ? `Updated ${time}`
+                : 'Live data unavailable';
+            loadLeaderboard(status);
+        } catch (e) {
+            console.error('[FundRace] refresh failed:', e);
+            loadLeaderboard('Live data unavailable');
+        } finally {
+            refreshing = false;
+        }
+    }
+
+    function updateDayCounter() {
+        const el = document.getElementById('fe-day-counter');
+        if (!el) return;
+        const start = new Date('2026-04-15T00:00:00');
+        const end   = new Date('2026-05-16T00:00:00');
+        const now   = new Date();
+        if (now < start) {
+            const days = Math.ceil((start - now) / 864e5);
+            el.textContent = days === 1 ? 'Starts tomorrow!' : `Starts in ${days} days`;
+        } else if (now >= end) {
+            el.textContent = 'Competition ended';
+        } else {
+            const day = Math.floor((now - start) / 864e5) + 1;
+            el.textContent = `Day ${day} of 31`;
+        }
+    }
+
+    async function init() {
+        updateDayCounter();
+        loadLeaderboard('⏳ Fetching live totals...');
+        await triggerRefresh();
+        setInterval(triggerRefresh, REFRESH_INTERVAL_MS);
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+    </script>
+
+    <!-- Instagram embed script — renders all <blockquote class="instagram-media"> embeds -->
+    <script async src="https://www.instagram.com/embed.js"></script>
+</body>
+</html>

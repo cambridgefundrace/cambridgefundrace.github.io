@@ -698,64 +698,7 @@ Working within our community is a huge aspect of what Wintercomfort does, gainin
     </div>
 
     <script>
-    // ── JUSTGIVING URL IDs (lowercase, matching justgiving.com/page/fundrace-{id}) ──
-    const JUSTGIVING_ID_MAP = {
-        "Christ's College":        "ch",
-        "Churchill College":       "chu",
-        "Clare College":           "cl",
-        "Clare Hall":              "clh",
-        "Corpus Christi College":  "cc",
-        "Darwin College":          "dar",
-        "Downing College":         "dow",
-        "Emmanuel College":        "em",
-        "Fitzwilliam College":     "fit",
-        "Girton College":          "gir",
-        "Gonville & Caius College":"cai",
-        "Homerton College":        "hom",
-        "Hughes Hall":             "hug",
-        "Jesus College":           "jes",
-        "King's College":          "k",
-        "Lucy Cavendish College":  "luc",
-        "Magdalene College":       "mag",
-        "Murray Edwards College":  "mur",
-        "Newnham College":         "new",
-        "Pembroke College":        "pem",
-        "Peterhouse":              "pet",
-        "Queens' College":         "q",
-        "Robinson College":        "rob",
-        "Selwyn College":          "sel",
-        "Sidney Sussex College":   "sid",
-        "St Catharine's College":  "cat",
-        "St Edmund's College":     "ed",
-        "St John's College":       "jn",
-        "Trinity College":         "t",
-        "Trinity Hall":            "th",
-        "Wolfson College":         "w"
-    };
-
-    // ── LIVE FETCH — Cloudflare Worker (aggregated) ──────────────────────────
-    // One request to the Worker; it fetches all 31 colleges server-side,
-    // parses amounts, caches the result for 2 min, and returns JSON.
-    const WORKER_URL = 'https://fundrace-proxy.alexanderfarren23.workers.dev/';
-
-    async function fetchAllAmounts() {
-        const res = await fetch(WORKER_URL);
-        if (!res.ok) throw new Error(`Worker HTTP ${res.status}`);
-
-        const data = await res.json();
-
-        let successCount = 0;
-        for (const [college, id] of Object.entries(JUSTGIVING_ID_MAP)) {
-            const amount = data[id];
-            if (amount !== null && amount !== undefined) {
-                const entry = FUNDS_DATA.find(c => c.college === college);
-                if (entry) { entry.raised_funds = amount; successCount++; }
-            } else {
-                console.warn(`[FundRace] No data for ${college} (id: ${id})`);
-            }
-        }
-        return successCount;
-    }
+    // ── FINAL RESULTS — fetched from Cloudflare Worker on 16 May 2026 ──────────
 
     function getCollegeAbbrev(collegeName) {
         const abbrevMap = {
@@ -794,47 +737,44 @@ Working within our community is a huge aspect of what Wintercomfort does, gainin
         return abbrevMap[collegeName] || collegeName.substring(0, 3).toUpperCase();
     }
 
-    const OVERALL_GOAL = 6000;
-    const COLLEGE_GOAL = 200;
-
     const FUNDS_DATA = [
-        { college: "Christ's College",        raised_funds: 0 },
+        { college: "Christ's College",        raised_funds: 87.09 },
         { college: "Churchill College",        raised_funds: 0 },
-        { college: "Clare College",            raised_funds: 0 },
+        { college: "Clare College",            raised_funds: 5 },
         { college: "Clare Hall",               raised_funds: 0 },
-        { college: "Corpus Christi College",   raised_funds: 0 },
-        { college: "Darwin College",           raised_funds: 0 },
-        { college: "Downing College",          raised_funds: 0 },
+        { college: "Corpus Christi College",   raised_funds: 2 },
+        { college: "Darwin College",           raised_funds: 15 },
+        { college: "Downing College",          raised_funds: 80 },
         { college: "Emmanuel College",         raised_funds: 0 },
         { college: "Fitzwilliam College",      raised_funds: 0 },
-        { college: "Girton College",           raised_funds: 0 },
-        { college: "Gonville & Caius College", raised_funds: 0 },
+        { college: "Girton College",           raised_funds: 215 },
+        { college: "Gonville & Caius College", raised_funds: 547 },
         { college: "Homerton College",         raised_funds: 0 },
-        { college: "Hughes Hall",              raised_funds: 0 },
-        { college: "Jesus College",            raised_funds: 0 },
-        { college: "King's College",           raised_funds: 0 },
-        { college: "Lucy Cavendish College",   raised_funds: 0 },
-        { college: "Magdalene College",        raised_funds: 0 },
+        { college: "Hughes Hall",              raised_funds: 18.67 },
+        { college: "Jesus College",            raised_funds: 80 },
+        { college: "King's College",           raised_funds: 10 },
+        { college: "Lucy Cavendish College",   raised_funds: 115 },
+        { college: "Magdalene College",        raised_funds: 10 },
         { college: "Murray Edwards College",   raised_funds: 0 },
         { college: "Newnham College",          raised_funds: 0 },
-        { college: "Pembroke College",         raised_funds: 0 },
-        { college: "Peterhouse",               raised_funds: 0 },
+        { college: "Pembroke College",         raised_funds: 5 },
+        { college: "Peterhouse",               raised_funds: 20 },
         { college: "Queens' College",          raised_funds: 0 },
-        { college: "Robinson College",         raised_funds: 0 },
-        { college: "Selwyn College",           raised_funds: 0 },
-        { college: "Sidney Sussex College",    raised_funds: 0 },
-        { college: "St Catharine's College",   raised_funds: 0 },
+        { college: "Robinson College",         raised_funds: 5 },
+        { college: "Selwyn College",           raised_funds: 184.72 },
+        { college: "Sidney Sussex College",    raised_funds: 314.12 },
+        { college: "St Catharine's College",   raised_funds: 5 },
         { college: "St Edmund's College",      raised_funds: 0 },
-        { college: "St John's College",        raised_funds: 0 },
-        { college: "Trinity College",          raised_funds: 0 },
-        { college: "Trinity Hall",             raised_funds: 0 },
-        { college: "Wolfson College",          raised_funds: 0 },
+        { college: "St John's College",        raised_funds: 400.31 },
+        { college: "Trinity College",          raised_funds: 200.07 },
+        { college: "Trinity Hall",             raised_funds: 20 },
+        { college: "Wolfson College",          raised_funds: 3 },
     ];
 
     function loadLeaderboard(statusText = '') {
         const data = FUNDS_DATA;
         data.sort((a, b) => b.raised_funds - a.raised_funds);
-        const totalRaised = data.reduce((sum, c) => sum + c.raised_funds, 0);
+        const totalRaised = data.reduce((sum, c) => sum + c.raised_funds, 0) + 10.02;
         const totalEl = document.getElementById('fe-total-raised');
         if (totalEl) totalEl.textContent = '£' + totalRaised.toLocaleString();
         const leaderboard = document.querySelector('.leaderboard');
@@ -906,7 +846,7 @@ Working within our community is a huge aspect of what Wintercomfort does, gainin
         // 11+ aggregate row
         const remainder = data.slice(10).filter(c => c.raised_funds > 0);
         if (remainder.length > 0) {
-            const remainderTotal = remainder.reduce((sum, c) => sum + c.raised_funds, 0);
+            const remainderTotal = remainder.reduce((sum, c) => sum + c.raised_funds, 0) + 10.02;
             const row = document.createElement('div');
             row.className = 'college-item remainder-row';
             const rankDiv = document.createElement('div');
@@ -934,31 +874,6 @@ Working within our community is a huge aspect of what Wintercomfort does, gainin
         }
     }
 
-    const REFRESH_INTERVAL_MS = 5 * 60 * 1000; // auto-refresh every 5 minutes
-    let refreshing = false;
-
-    async function triggerRefresh() {
-        if (refreshing) return;
-        refreshing = true;
-
-        const span = document.querySelector('.goal-status');
-        if (span) span.textContent = '⏳ Updating...';
-
-        try {
-            const successCount = await fetchAllAmounts();
-            const time = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-            const status = successCount > 0
-                ? `Updated ${time}`
-                : 'Live data unavailable';
-            loadLeaderboard(status);
-        } catch (e) {
-            console.error('[FundRace] refresh failed:', e);
-            loadLeaderboard('Live data unavailable');
-        } finally {
-            refreshing = false;
-        }
-    }
-
     function updateDayCounter() {
         const el = document.getElementById('fe-day-counter');
         if (!el) return;
@@ -976,11 +891,9 @@ Working within our community is a huge aspect of what Wintercomfort does, gainin
         }
     }
 
-    async function init() {
+    function init() {
         updateDayCounter();
-        loadLeaderboard('⏳ Fetching live totals...');
-        await triggerRefresh();
-        setInterval(triggerRefresh, REFRESH_INTERVAL_MS);
+        loadLeaderboard();
     }
 
     window.addEventListener('DOMContentLoaded', init);

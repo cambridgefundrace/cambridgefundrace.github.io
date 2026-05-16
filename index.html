@@ -15,19 +15,7 @@
     <style>
         /* ── DONATE LIVE (toggle) ── */
         .donate-button { display: block !important; }
-        .coming-soon-block { display: none !important; }
-
-        /* ── DONATE FLOW STYLES ── */
-
-        /* Leaderboard rows are now <a> elements */
-        a.college-item {
-            text-decoration: none;
-            color: inherit;
-            -webkit-tap-highlight-color: rgba(165, 28, 48, 0.08);
-        }
-        a.college-item:active {
-            background: rgba(165, 28, 48, 0.06) !important;
-        }
+        .coming-soon-block { display: flex !important; }
 
         /* ── FUNDRACE EXPLAINER — 2×2 grid revamp ── */
         .description.fe-revamp {
@@ -266,45 +254,18 @@
             margin-bottom: 0.3rem;
         }
 
-        /* Refresh button — lives inside the dark goal banner */
-        .leaderboard-refresh-btn {
-            background: none;
-            border: 1px solid rgba(255,255,255,0.25);
-            border-radius: 4px;
-            color: #ccc;
-            font-size: 1rem;
-            padding: 1px 7px;
-            cursor: pointer;
-            flex-shrink: 0;
-            line-height: 1.5;
-            transition: background 0.15s;
-            margin-left: 8px;
-        }
-        .leaderboard-refresh-btn:hover { background: rgba(255,255,255,0.1); }
-        .leaderboard-refresh-btn:disabled { opacity: 0.35; cursor: default; }
-
         /* Hero amount */
         .goal-hero {
             display: flex;
             align-items: baseline;
             gap: 0.4rem;
         }
-        .goal-raised { font-size: 1.9rem !important; font-weight: 800; color: #fff !important; line-height: 1; }
-        .goal-raised-label { font-size: 0.95rem; color: rgba(255,255,255,0.55); font-weight: 500; }
-        .goal-subtitle {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            font-size: 0.78rem;
-            color: rgba(255,255,255,0.4);
-            margin-bottom: 8px;
-            margin-top: 1px;
-        }
-        .goal-status {
-            font-size: 0.72rem;
-            color: rgba(255,255,255,0.4);
-            font-style: italic;
-        }
+        .goal-raised { font-size: 2.8rem !important; font-weight: 800; color: #fff !important; line-height: 1; }
+        .goal-raised-label { font-size: 1.1rem; color: rgba(255,255,255,0.55); font-weight: 500; }
+        .goal-confetti { font-size: 2.4rem; line-height: 1; align-self: center; }
+        #fe-total-raised { font-size: 1.7rem; }
+        .fe-stat--inline { display: flex; align-items: baseline; justify-content: center; gap: 0.3rem; }
+        .name-trophy { font-size: 1.9rem; line-height: 1; filter: drop-shadow(0 2px 4px rgba(180,130,0,0.5)); margin-left: 0.3rem; vertical-align: middle; }
 
         /* Donate button: full-width on mobile, anchored above leaderboard */
         .donate-button + .description { margin-top: 1.5rem; }
@@ -357,6 +318,9 @@
             .instagram-feed { flex: 0 0 auto !important; overflow: visible; }
             .feed-container { max-height: 400px; overflow-y: auto; overflow-x: hidden; }
             .feed-container .instagram-media { max-width: 100% !important; min-width: 0 !important; }
+            .goal-raised { font-size: 1.9rem !important; }
+            .goal-confetti { font-size: 1.7rem; }
+            .donate-button { padding: 12px 30px; font-size: 1em; }
         }
     </style>
 </head>
@@ -466,7 +430,7 @@
 
         <!-- DONATE BUTTON — top of page -->
         <button class="donate-button" onclick="(function(){ const el = document.getElementById('donate-btn-2'); const top = window.scrollY + el.getBoundingClientRect().top - window.innerHeight * 0.1; window.scrollTo({top, behavior:'smooth'}); })()">
-            ► Donate for your college ◄
+            ► See results ◄
         </button>
 
         <!-- DESCRIPTION — 2×2 grid revamp -->
@@ -497,7 +461,6 @@
                     <ul>
                         <li>Each college is represented by 1-2 students who volunteer as <strong>FundRacers</strong></li>
                         <li>FundRacers will represent their college online and must organise at least 1 event</li>
-                        <li>Each college will aim to raise <strong>£200</strong>, so we all participate together</li>
                         <li>We encourage donations of <strong>£5</strong> so everyone (especially students) can contribute</li>
                     </ul>
                 </div>
@@ -523,9 +486,9 @@
                             <div class="fe-stat-value" id="fe-day-counter">—</div>
                         </div>
                         <div class="fe-stat-divider"></div>
-                        <div class="fe-stat">
+                        <div class="fe-stat fe-stat--inline">
                             <div class="fe-stat-value" id="fe-total-raised">£—</div>
-                            <div class="fe-stat-label">raised so far</div>
+                            <div class="fe-stat-label">raised</div>
                         </div>
                     </div>
                 </div>
@@ -592,15 +555,14 @@
 
         <!-- DONATE BUTTON — scrolls to leaderboard -->
         <button id="donate-btn-2" class="donate-button" onclick="document.getElementById('leaderboard-section').scrollIntoView({behavior:'smooth'})">
-            Tap/click your college ↓
+            Final Leaderboard ↓
         </button>
 
-        <!-- COMING SOON (hidden in this test file) -->
+        <!-- THANK YOU BLOCK -->
         <div class="coming-soon-block">
-            <div class="cs-flag">🏁</div>
-            <h2>Coming <span>Soon</span></h2>
-            <p>The donation link will go live when the FundRace starts.</p>
-            <div class="cs-date">April 2026</div>
+            <div class="cs-flag">🙏</div>
+            <h2>Thank <span>You</span></h2>
+            <p>To every student who donated, fundraised, or simply spread the word.<br>You've helped show that Cambridge students care about the local community and harness our college rivalries for good.</p>
         </div>
 
         <!-- MAIN CONTENT: leaderboard + prizes + feed -->
@@ -620,15 +582,15 @@
                         </li>
                         <li>
                             <span class="goal-text">Biggest single donation</span>
-                            <span class="prize">So far: Selwyn — £146 from Albie Esparza</span>
+                            <span class="prize">Selwyn — £146 from Albie Esparza</span>
                         </li>
                         <li>
                             <span class="goal-text">Most individual donations</span>
-                            <span class="prize">So far: Gonville &amp; Caius — 58 donations</span>
+                            <span class="prize">Gonville &amp; Caius — 64 donations</span>
                         </li>
                         <li>
                             <span class="goal-text">Most creative fundraising event</span>
-                            <span class="prize">???</span>
+                            <span class="prize">To be announced...</span>
                         </li>
                         <!-- <li>
                             <span class="goal-text">Best social media engagement</span>
@@ -653,29 +615,22 @@
         <!-- BOTTOM SPLIT: Help Us + Organisers -->
         <div class="bottom-split">
 
-            <!-- HELP US / SIGN UP -->
+            <!-- FUNDRACERS -->
             <div class="about-card signup-card">
                 <div class="card-heading-banner">
-                    <h2 class="section-heading">Volunteer</h2>
+                    <h2 class="section-heading">FundRacers</h2>
                 </div>
                 <div class="about-card-body">
-                <p class="signup-intro"><b>Help us! </b>Are you a student wanting to help give back to the local community in Cambridge? Sign up to become a FundRacer and represent your college in this year's competition. Each college needs 2 FundRacers — spots are limited!</p>
-                <ul class="signup-perks">
-                    <li>Fundraise on behalf of your college &amp; compete on the leaderboard.</li>
-                    <li>Pick up small prizes including college giveaways, ice cream &amp; more.</li>
-                    <li>Gain genuine leadership &amp; volunteering experience to put on your CV!</li>
-                </ul>
-                <a href="https://forms.gle/9st82FtN87EXfU6T7" target="_blank" rel="noopener"><button class="signup-btn">Sign up as a FundRacer</button></a>
-                <div class="signup-notice">
-                    🎓 This form is mainly for University of Cambridge students who are members of one of the 31 colleges. If that's not you, please help by volunteering and coordinating with the FundRacers where possible!
-                </div>
-                <div class="colleges-needed">
-                    <span class="colleges-needed-label">Colleges needing FundRacers:</span>
-                    Christ's, Churchill, Clare, Clare Hall, Corpus Christi, Darwin, Emmanuel, Fitzwilliam, Homerton, Hughes Hall, King's, Lucy Cavendish, Magdalene, Murray Edwards, Newnham, Pembroke, Queens', Robinson, St Catharine's, St Edmund's, Selwyn, Trinity Hall, Wolfson
-                </div>
-                <div class="colleges-full">
-                    <span class="colleges-full-label">Colleges with FundRacers:</span>
-                    Downing, Girton, Gonville &amp; Caius, Jesus, Peterhouse, Sidney Sussex, St John's, Trinity
+                <p class="signup-intro">Students who represented their colleges in the 2026 Cambridge FundRace.</p>
+                <div class="fundracer-grid">
+                    <div class="fundracer-entry"><img class="fundracer-crest" src="Images/logos/DOW.png" alt="Downing"><div class="fundracer-info"><div class="fundracer-college">Downing</div><div class="fundracer-names">Eleanor Jones</div></div></div>
+                    <div class="fundracer-entry"><img class="fundracer-crest" src="Images/logos/GIR.png" alt="Girton"><div class="fundracer-info"><div class="fundracer-college">Girton</div><div class="fundracer-names">Jenna Min Schmidt</div></div></div>
+                    <div class="fundracer-entry"><img class="fundracer-crest" src="Images/logos/CAI.png" alt="Gonville &amp; Caius"><div class="fundracer-info"><div class="fundracer-college">Gonville &amp; Caius</div><div class="fundracer-names">Max Ferrara</div></div></div>
+                    <div class="fundracer-entry"><img class="fundracer-crest" src="Images/logos/JES.png" alt="Jesus"><div class="fundracer-info"><div class="fundracer-college">Jesus</div><div class="fundracer-names">Constantin Iosub</div></div></div>
+                    <div class="fundracer-entry"><img class="fundracer-crest" src="Images/logos/PET.png" alt="Peterhouse"><div class="fundracer-info"><div class="fundracer-college">Peterhouse</div><div class="fundracer-names">Shivvy Jariwala</div></div></div>
+                    <div class="fundracer-entry"><img class="fundracer-crest" src="Images/logos/SID.png" alt="Sidney Sussex"><div class="fundracer-info"><div class="fundracer-college">Sidney Sussex</div><div class="fundracer-names">Lawrence Berry</div></div></div>
+                    <div class="fundracer-entry"><img class="fundracer-crest" src="Images/logos/JN.png" alt="St John's"><div class="fundracer-info"><div class="fundracer-college">St John's</div><div class="fundracer-names">Alex Farren, Johnny Kelly</div></div></div>
+                    <div class="fundracer-entry"><img class="fundracer-crest" src="Images/logos/T.png" alt="Trinity"><div class="fundracer-info"><div class="fundracer-college">Trinity</div><div class="fundracer-names">Anna Johns, Eva Kelly</div></div></div>
                 </div>
                 </div><!-- /.about-card-body -->
             </div>
@@ -876,103 +831,107 @@ Working within our community is a huge aspect of what Wintercomfort does, gainin
         { college: "Wolfson College",          raised_funds: 0 },
     ];
 
-    function loadLeaderboard(statusText = 'Tap your college to donate on JustGiving') {
+    function loadLeaderboard(statusText = '') {
         const data = FUNDS_DATA;
         data.sort((a, b) => b.raised_funds - a.raised_funds);
-
         const totalRaised = data.reduce((sum, c) => sum + c.raised_funds, 0);
-
-        // Update live stats bar
         const totalEl = document.getElementById('fe-total-raised');
         if (totalEl) totalEl.textContent = '£' + totalRaised.toLocaleString();
-
         const leaderboard = document.querySelector('.leaderboard');
         leaderboard.innerHTML = '';
 
-        // ── OVERALL GOAL BANNER (includes refresh button + status) ──────
-        const overallPct = Math.min((totalRaised / OVERALL_GOAL) * 100, 100);
+        // Goal banner (no progress bar, no refresh button)
         const goalBanner = document.createElement('div');
         goalBanner.className = 'goal-banner';
         goalBanner.innerHTML = `
             <div class="goal-banner-top">
                 <div class="goal-hero">
+                    <span class="goal-confetti">🎉</span>
                     <span class="goal-raised">£${totalRaised.toLocaleString()}</span>
                     <span class="goal-raised-label">raised</span>
                 </div>
-                <button class="leaderboard-refresh-btn" title="Refresh live totals">↻</button>
-            </div>
-            <div class="goal-subtitle">
-                <span>${overallPct >= 100 ? '🏁 Goal reached!' : 'toward £' + OVERALL_GOAL.toLocaleString() + ' · ' + Math.round(overallPct) + '%'}</span>
-                <span class="goal-status">${statusText}</span>
-            </div>
-            <div class="goal-track">
-                <div class="goal-fill" style="width: ${overallPct}%"></div>
             </div>
         `;
-        goalBanner.querySelector('.leaderboard-refresh-btn').onclick =
-            (e) => { e.preventDefault(); triggerRefresh(); };
         leaderboard.appendChild(goalBanner);
 
-        // ── COLLEGE ROWS ─────────────────────────────────────────────────
-        data.forEach((college, index) => {
+        // Top 10 rows (div, not <a>)
+        const topAmount = data[0]?.raised_funds || 0;
+        data.slice(0, 10).forEach((college, index) => {
             const rank = index + 1;
             const amount = college.raised_funds;
             const abbrev = getCollegeAbbrev(college.college);
-            const donateId = JUSTGIVING_ID_MAP[college.college] || abbrev.toLowerCase();
-
             let itemClass = 'college-item';
             if (rank === 1) itemClass += ' top-1';
-            else if (rank <= 5) itemClass += ' top-5';
-
-            // Row is an <a> element — the whole row is the tap target
-            const item = document.createElement('a');
+            else if (rank === 2) itemClass += ' top-2';
+            else if (rank === 3) itemClass += ' top-3';
+            const item = document.createElement('div');
             item.className = itemClass;
-            item.href = 'https://www.justgiving.com/page/fundrace-' + donateId;
-            item.target = '_blank';
-            item.rel = 'noopener';
-
-            const collegePct = Math.min((amount / COLLEGE_GOAL) * 100, 100);
+            const collegePct = topAmount > 0 ? (amount / topAmount) * 100 : 0;
             item.style.setProperty('--bar-pct', `${collegePct}%`);
-
             const logoDiv = document.createElement('div');
             logoDiv.className = 'logo';
-
             const logoImg = document.createElement('img');
             logoImg.src = `Images/logos/${abbrev}.png`;
             logoImg.alt = college.college;
             logoImg.style.width = '100%';
             logoImg.style.height = '100%';
             logoImg.style.objectFit = 'contain';
-            logoImg.onerror = function() {
-                logoDiv.textContent = abbrev;
-                logoImg.remove();
-            };
+            logoImg.onerror = function() { logoDiv.textContent = abbrev; logoImg.remove(); };
             logoDiv.appendChild(logoImg);
-
             const rankDiv = document.createElement('div');
             rankDiv.className = 'rank';
-            rankDiv.textContent = `${rank}.`;
-
+            rankDiv.textContent = rank <= 3 ? `${rank}` : `${rank}.`;
             const middleDiv = document.createElement('div');
             middleDiv.className = 'college-middle';
-
             const nameDiv = document.createElement('div');
             nameDiv.className = 'college-name';
             nameDiv.textContent = college.college;
-
+            if (rank === 1) {
+                const trophy = document.createElement('span');
+                trophy.className = 'name-trophy';
+                trophy.textContent = '🏆';
+                nameDiv.appendChild(trophy);
+            }
             middleDiv.appendChild(nameDiv);
-
             const amountDiv = document.createElement('div');
             amountDiv.className = 'amount';
             amountDiv.textContent = `£${amount.toLocaleString()}`;
-
             item.appendChild(rankDiv);
             item.appendChild(logoDiv);
             item.appendChild(middleDiv);
             item.appendChild(amountDiv);
-
             leaderboard.appendChild(item);
         });
+
+        // 11+ aggregate row
+        const remainder = data.slice(10).filter(c => c.raised_funds > 0);
+        if (remainder.length > 0) {
+            const remainderTotal = remainder.reduce((sum, c) => sum + c.raised_funds, 0);
+            const row = document.createElement('div');
+            row.className = 'college-item remainder-row';
+            const rankDiv = document.createElement('div');
+            rankDiv.className = 'rank';
+            rankDiv.textContent = '11+';
+            const crestsDiv = document.createElement('div');
+            crestsDiv.className = 'remainder-crests';
+            remainder.forEach(college => {
+                const abbrev = getCollegeAbbrev(college.college);
+                const img = document.createElement('img');
+                img.src = `Images/logos/${abbrev}.png`;
+                img.alt = college.college;
+                img.title = college.college;
+                img.className = 'remainder-crest';
+                img.onerror = function() { this.remove(); };
+                crestsDiv.appendChild(img);
+            });
+            const amountDiv = document.createElement('div');
+            amountDiv.className = 'amount';
+            amountDiv.textContent = `£${remainderTotal.toLocaleString()}`;
+            row.appendChild(rankDiv);
+            row.appendChild(crestsDiv);
+            row.appendChild(amountDiv);
+            leaderboard.appendChild(row);
+        }
     }
 
     const REFRESH_INTERVAL_MS = 5 * 60 * 1000; // auto-refresh every 5 minutes
@@ -982,10 +941,7 @@ Working within our community is a huge aspect of what Wintercomfort does, gainin
         if (refreshing) return;
         refreshing = true;
 
-        // Disable the button and show loading state in the goal banner
-        const btn = document.querySelector('.leaderboard-refresh-btn');
         const span = document.querySelector('.goal-status');
-        if (btn)  { btn.disabled = true; btn.textContent = '…'; }
         if (span) span.textContent = '⏳ Updating...';
 
         try {
